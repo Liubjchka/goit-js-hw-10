@@ -26,7 +26,8 @@
 Проскроливши сторінку до самого кінця, в секції `«Workflow permissions»` обери
 опцію `«Read and write permissions»` і постав галочку в чекбоксі. Це необхідно
 для автоматизації процесу деплою проекту. (Поставити галочку в чекбоксі - "Allow
-GitHub Actions to create and approve pull requests" та зберегти)
+GitHub Actions to create and approve pull requests" та зберегти. Перевірити чи
+все працює можна на гітхабі в вкладці Actions)
 
 ![Settings GitHub Actions permissions step 2](./assets/gh-actions-perm-2.png)
 
