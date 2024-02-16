@@ -1,6 +1,7 @@
 // Підключені бібліотеки flatpickr та iziToast.
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
 import iziToast from 'izitoast/dist/js/iziToast.min.js';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -19,28 +20,42 @@ let userSelectedDate;
 
 allComponents.btn.disabled = true;
 
-// Обробник зміни дати в інпуті
+// Опції для flatpickr
+const options = {
+  enableTime: true,
+  dateFormat: 'Y-m-d H:i',
+  altInput: true,
+  altFormat: 'F j, Y',
+  closeOnEscape: true,
+  timeout: 1000,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    userSelectedDate = selectedDates[0];
+    if (userSelectedDate <= new Date()) {
+      iziToast.warning({
+        title: 'Warning',
+        message: 'Please choose a date in the future',
+      });
+      allComponents.btn.disabled = true;
+    } else {
+      allComponents.btn.disabled = false;
+    }
+  },
+};
 
-allComponents.btn.addEventListener('change', event => {
-  userSelectedDate = new Date(event.target.value);
-
-  if (userSelectedDate <= new Date()) {
-    iziToast.warning({
-      title: 'Warning',
-      message: 'Please choose a date in the future',
-    });
-    allComponents.btn.disabled = true;
-  } else {
-    allComponents.btn.disabled = false;
-  }
-});
+// Ініціалізація flatpickr
+flatpickr(allComponents.input, options);
 
 // Обробник натискання на кнопку Start
 
 allComponents.btn.addEventListener('click', () => {
-  allComponents.btn.disabled = true;
-  allComponents.input.disabled = true;
-  startTimer();
+  if (!allComponents.btn.disabled) {
+    allComponents.btn.disabled = true;
+    allComponents.input.disabled = true;
+    startTimer();
+  }
 });
 
 // Клас для таймера
@@ -86,22 +101,6 @@ function onTick(remainingTime) {
   allComponents.seconds.textContent = formattedTime.seconds;
 }
 
-function timerSet() {
-  const date = new Date();
-  const timeLeft = userSelectedDate - date;
-
-  if (timeLeft <= 0) {
-    stopTimer();
-    return;
-  }
-
-  const { days, hours, minutes, seconds } = convertMs(timeLeft);
-  refs.days.textContent = days;
-  refs.hours.textContent = hours;
-  refs.minutes.textContent = minutes;
-  refs.seconds.textContent = seconds;
-}
-
 // Функція форматування чисел з додаванням лідируючих нулів
 function addLeadingZero({ days, hours, minutes, seconds }) {
   days = days.toString().padStart(2, '0');
@@ -112,23 +111,8 @@ function addLeadingZero({ days, hours, minutes, seconds }) {
   return { days, hours, minutes, seconds };
 }
 
-// Опції для flatpickr
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-    userSelectedDate = selectedDates[0];
-    allComponents.btn.disabled = false;
-  },
-};
-
-// Ініціалізація flatpickr
-flatpickr(allComponents.input, options);
-
 function convertMs(ms) {
-  // Number of milliseconds per unit of time
+  // Кількість мілісекунд на одиницю часу
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
