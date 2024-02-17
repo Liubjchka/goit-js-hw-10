@@ -4,25 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="stylesheet" href="./css/2-snackbar.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <title>Page 3</title>
+    <title>Snackbar</title>
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
     <section>
-      <a href="./index.html">Go to home</a>
-      <h1>Welcome to page 3</h1>
+      <a href="./index.html">Go home</a>
     </section>
     <form class="form">
       <label>
         Delay (ms)
-        <input type="number" name="delay" required />
+        <input type="number" name="delay" required min="500" step="500" />
       </label>
 
       <fieldset>
@@ -39,6 +31,7 @@
 
       <button type="submit">Create notification</button>
     </form>
+
     <script src="./js/2-snackbar.js" type="module"></script>
   </body>
 </html>
