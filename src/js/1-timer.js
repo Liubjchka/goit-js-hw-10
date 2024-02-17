@@ -5,7 +5,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 import iziToast from 'izitoast/dist/js/iziToast.min.js';
 import 'izitoast/dist/css/iziToast.min.css';
 
-const allComponents = {
+// import iziToast from 'izitoast';
+// import 'izitoast/dist/css/iziToast.min.css';
+
+const references = {
   btn: document.querySelector('button[data-start]'),
   input: document.querySelector('#datetime-picker'),
   days: document.querySelector('[data-days]'),
@@ -18,42 +21,41 @@ let userSelectedDate;
 
 // При першому завантаженні сторінки кнопка Start не активна.
 
-allComponents.btn.disabled = true;
+references.btn.disabled = true;
 
 // Опції для flatpickr
 const options = {
   enableTime: true,
-  dateFormat: 'Y-m-d H:i',
-  altInput: true,
-  altFormat: 'F j, Y',
-  closeOnEscape: true,
-  timeout: 1000,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+  closeOnEscape: true,
+  timeout: 1000,
   onClose(selectedDates) {
     userSelectedDate = selectedDates[0];
+
     if (userSelectedDate <= new Date()) {
-      iziToast.warning({
-        title: 'Warning',
+      iziToast.error({
+        title: 'Error',
+        position: 'topRight',
         message: 'Please choose a date in the future',
       });
-      allComponents.btn.disabled = true;
+      references.btn.disabled = true;
     } else {
-      allComponents.btn.disabled = false;
+      references.btn.disabled = false;
     }
   },
 };
 
 // Ініціалізація flatpickr
-flatpickr(allComponents.input, options);
+flatpickr(references.input, options);
 
 // Обробник натискання на кнопку Start
 
-allComponents.btn.addEventListener('click', () => {
-  if (!allComponents.btn.disabled) {
-    allComponents.btn.disabled = true;
-    allComponents.input.disabled = true;
+references.btn.addEventListener('click', () => {
+  if (!references.btn.disabled) {
+    references.btn.disabled = true;
+    references.input.disabled = true;
     startTimer();
   }
 });
@@ -95,10 +97,10 @@ function startTimer() {
 function onTick(remainingTime) {
   const timeObj = convertMs(remainingTime);
   const formattedTime = addLeadingZero(timeObj);
-  allComponents.days.textContent = formattedTime.days;
-  allComponents.hours.textContent = formattedTime.hours;
-  allComponents.minutes.textContent = formattedTime.minutes;
-  allComponents.seconds.textContent = formattedTime.seconds;
+  references.days.textContent = formattedTime.days;
+  references.hours.textContent = formattedTime.hours;
+  references.minutes.textContent = formattedTime.minutes;
+  references.seconds.textContent = formattedTime.seconds;
 }
 
 // Функція форматування чисел з додаванням лідируючих нулів
