@@ -25,10 +25,10 @@ function onFormSubmit(event) {
       }
     }, delay);
   });
-  promise.then(onSuccess).catch(onError);
+  promise.then(handlePromiseSuccess).catch(handlePromiseReject);
 }
 
-function onSuccess(success) {
+function handlePromiseSuccess(success) {
   iziToast.success({
     displayMode: 'replace',
     message: success,
@@ -37,7 +37,7 @@ function onSuccess(success) {
   });
 }
 
-function onError(error) {
+function handlePromiseReject(error) {
   iziToast.error({
     icon: '',
     message: error,
