@@ -1,5 +1,5 @@
 // Підключена бібліотека iziToast.
-import iziToast from 'izitoast/dist/js/iziToast.min.js';
+import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 //Додаю слухача подій на форму
@@ -12,13 +12,9 @@ references.formEl.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
-  createPromise(1000, 'fulfilled').then(onSuccess).catch(onError);
-}
 
-//Функція створення промісу
-function createPromise(delay, state) {
   const promise = new Promise((resolve, reject) => {
-    const delay = references.formEl.elements.delay.value;
+    const delay = parseInt(references.formEl.elements.delay.value);
     const state = references.formEl.elements.state.value;
 
     setTimeout(() => {
@@ -29,7 +25,7 @@ function createPromise(delay, state) {
       }
     }, delay);
   });
-  return promise;
+  promise.then(onSuccess).catch(onError);
 }
 
 function onSuccess(success) {
@@ -48,3 +44,7 @@ function onError(error) {
     position: 'topRight',
   });
 }
+
+// function createPromise(delay, state) {
+
+// }
